@@ -5,13 +5,13 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
 const app = express()
 
-// setting up cors
-// app.use(cors(
-//     {
-//         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-//         origin: 'https://sales-inventory-server.herokuapp.com/' ,
-//     }
-// ))
+setting up cors
+app.use(cors(
+    {
+        methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+        origin: 'https://sales-inventory-server.herokuapp.com/' ,
+    }
+))
 
 app.use(bodyParser.json());
 app.use(fileUpload());
