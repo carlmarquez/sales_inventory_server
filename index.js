@@ -4,7 +4,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
 const app = express()
-var allowedOrigins = ['https://jars-cellular.netlify.app/'];
+var allowedOrigins = ['https://jars-cellular.netlify.app'];
 //setting up cors
 app.use(cors(
     {
