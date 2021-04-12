@@ -6,12 +6,12 @@ const fileUpload = require('express-fileupload')
 const app = express()
 
 // setting up cors
-app.use(cors(
-    {
-        methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: 'http://localhost:3000',
-    }
-))
+// app.use(cors(
+//     {
+//         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//         origin: 'http://localhost:3000',
+//     }
+// ))
 
 app.use(bodyParser.json());
 app.use(fileUpload());
@@ -57,7 +57,7 @@ app.post('/upload', async (req, res) => {
 
 db.sequelize.sync().then((req) => {
 
-    app.listen(3001, () => {
+    app.listen(process.env.PORT || 3001, () => {
         console.log("Server running");
     })
 })

@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "pokemondeluge123",
-    "database": "sales_inventory",
-    "host": "localhost",
+    "username": "freedbtech_JARScellular",
+    "password": "JARScellular123",
+    "database": "freedbtech_salesinventoryjars",
+    "host": "freedb.tech",
     "dialect": "mysql"
   },
   "test": {
