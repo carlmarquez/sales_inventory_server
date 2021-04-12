@@ -4,12 +4,22 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
 const app = express()
-
+var allowedOrigins = ['https://jars-cellular.netlify.app/'];
 //setting up cors
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: 'https://jars-cellular.netlify.app/' ,
+        origin: function(origin, callback){
+            // allow requests with no origin 
+            // (like mobile apps or curl requests)
+            if(!origin) return callback(null, true);
+            if(allowedOrigins.indexOf(origin) === -1){
+              var msg = 'The CORS policy for this site does not ' +
+                        'allow access from the specified Origin.';
+              return callback(new Error(msg), false);
+            }
+            return callback(null, true);}
+       
     }
 ))
 
