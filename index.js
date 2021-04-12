@@ -9,7 +9,7 @@ const app = express()
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: 'https://sales-inventory-server.herokuapp.com/' ,
+        origin: 'https://jars-cellular.netlify.app/' ,
     }
 ))
 
