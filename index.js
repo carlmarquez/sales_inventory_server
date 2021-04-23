@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload')
 const app = express()
 
 // setting up cors
-var allowedOrigins = ['https://jars-cellular.netlify.app'];
+var allowedOrigins = ['https://jars-cellular.netlify.app','https://sales-inventory-ui.herokuapp.com/'];
 //setting up cors
 app.use(cors(
     {
