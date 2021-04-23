@@ -4,22 +4,12 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
 const app = express()
-var allowedOrigins = ['https://jars-cellular.netlify.app'];
-//setting up cors
+
+// setting up cors
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: function(origin, callback){
-            // allow requests with no origin 
-            // (like mobile apps or curl requests)
-            if(!origin) return callback(null, true);
-            if(allowedOrigins.indexOf(origin) === -1){
-              var msg = 'The CORS policy for this site does not ' +
-                        'allow access from the specified Origin.';
-              return callback(new Error(msg), false);
-            }
-            return callback(null, true);}
-       
+        origin: 'http://localhost:3000',
     }
 ))
 
@@ -48,18 +38,18 @@ app.use('/customer', CustomerRoute)
 
 app.post('/upload', async (req, res) => {
 
-    if(req.files === null) {
+    if (req.files === null) {
         return res.status(400).json({msg: 'No file Uploaded'})
     }
 
     const file = req.files.picture
 
-    file.mv(`${__dirname}/uploads/${file.name}`, err => {
-        if(err){
+    file.mv(`${__dirname}/uploads/image/${file.name}`, err => {
+        if (err) {
             console.log(err)
             return res.status(500).send(err)
         }
-        })
+    })
 
 
     res.send(`Hello World`)
@@ -67,7 +57,7 @@ app.post('/upload', async (req, res) => {
 
 db.sequelize.sync().then((req) => {
 
-    app.listen(process.env.PORT || 3001, () => {
+    app.listen(3001, () => {
         console.log("Server running");
     })
 })
