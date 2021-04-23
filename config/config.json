@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "freedbtech_JARScellular",
-    "password": "JARScellular123",
-    "database": "freedbtech_salesinventoryjars",
-    "host": "freedb.tech",
+    "username": "admin",
+    "password": "vnfu50td4MgzmNdLIFRb",
+    "database": "sales_inventory",
+    "host": "jars-sales-inventory.cdzdapjk2vxn.us-east-2.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "test": {
@@ -14,10 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "freedbtech_JARScellular",
-    "password": "JARScellular123",
-    "database": "freedbtech_salesinventoryjars",
-    "host": "freedb.tech",
+    "username": "root",
+    "password": null,
+    "database": "database_production",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   }
 }
