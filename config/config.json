@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "admin",
-    "password": "vnfu50td4MgzmNdLIFRb",
+    "username": "root",
+    "password": null,
     "database": "sales_inventory",
-    "host": "jars-sales-inventory.cdzdapjk2vxn.us-east-2.rds.amazonaws.com",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
