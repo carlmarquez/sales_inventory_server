@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
         city: {
             type: DataTypes.STRING
         },
+        state: {
+            type: DataTypes.STRING
+        },
         postalCode: {
             type: DataTypes.INTEGER
         },
@@ -24,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         tel_no: {
             type: DataTypes.STRING
+        },
+        deletedAt: {
+            type: DataTypes.DATE
         }
     });
 

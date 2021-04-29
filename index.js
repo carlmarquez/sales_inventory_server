@@ -5,32 +5,14 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
 const app = express()
 const verify = require('./utils/jwt')
-const {User, Store} = require('./models')
-// setting up cors
-// app.use(cors(
-//     {
-//         origin: 'https://jars-cellular.netlify.app/',
-//         methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
-//         preflightContinue: true
-//     }
-// ))
-// app.options('*', cors())
-var allowedOrigins = ['http://localhost:3000',
-                      'https://jars-cellular.netlify.app/'];
-app.use(cors({
-  origin: function(origin, callback){
-    // allow requests with no origin 
-    // (like mobile apps or curl requests)
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      var msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  }
-}));
 
+// setting up cors
+app.use(cors(
+    {
+        methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+        origin: 'http://localhost:3000',
+    }
+))
 
 app.use(bodyParser.json());
 app.use(fileUpload());
@@ -46,19 +28,17 @@ const UserRoute = require("./routes/UserRoute")
 const AuditTrailRoute = require('./routes/AuditTrail')
 const DashBoardRoute = require('./routes/DashBoardRoute')
 const Auth = require('./routes/Authentication')
-const Settings = require('./routes/SettingsRoute')
 
 // route implementation
 app.use('/product', ProductRoute)
-app.use('/user', verify, UserRoute)
-app.use('/transaction', verify, TransactionRoute)
-app.use('/supplier', verify, SupplierRoute)
-app.use('/store', verify, StoreRoute)
-app.use('/sales', verify, SalesRoute)
-app.use('/customer', verify, CustomerRoute)
-app.use('/audit', verify, AuditTrailRoute)
-app.use('/dashboard', verify, DashBoardRoute)
-app.use('/setting', verify, Settings)
+app.use('/user',verify, UserRoute)
+app.use('/transaction',verify, TransactionRoute)
+app.use('/supplier', verify,SupplierRoute)
+app.use('/store', verify,StoreRoute)
+app.use('/sales',verify, SalesRoute)
+app.use('/customer',verify, CustomerRoute)
+app.use('/audit',verify, AuditTrailRoute)
+app.use('/dashboard',verify, DashBoardRoute)
 app.use('/', Auth)
 
 app.post('/upload', async (req, res) => {
@@ -81,47 +61,7 @@ app.post('/upload', async (req, res) => {
 })
 
 db.sequelize.sync().then(() => {
-    app.listen(process.env.PORT || 3001, async () => {
-
-        const store = await Store.findOne({
-            where: {id: 1}
-        })
-
-        if (!store) {
-            try {
-                await Store.create({
-                    code: 'jard-main-location',
-                    location: 'San Pablo',
-                    email: 'owner@gmail.com',
-                    postalCode: '1850',
-                    mobile_no: '0515152',
-                    tel_no: '921933'
-                })
-            } catch (ignored) {
-                console.log("Store Already Exist")
-            }
-        }
-
-
-        const user = await User.findOne({
-            where: {id: 1}
-        })
-
-        if (!user) {
-            try {
-                await User.create({
-                    email: 'owner',
-                    password: 'jars',
-                    firstName: 'owner',
-                    lastName: 'lastName',
-                    role: 3,
-                    status: 1,
-                    StoreId: 1,
-                })
-            } catch (ignored) {
-                console.log("User Already exist")
-            }
-        }
-
+    app.listen(3001, () => {
+        console.log("Server running");
     })
 })

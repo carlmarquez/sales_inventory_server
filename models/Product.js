@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true
             }
         },
-        code: {
+        code:{
             type: DataTypes.INTEGER,
             allowNull: false,
             validate: {
@@ -22,6 +22,13 @@ module.exports = (sequelize, DataTypes) => {
             }
         },
 
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            }
+        },
         price: {
             type: DataTypes.DOUBLE,
             allowNull: false,
@@ -36,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         photo: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull:false,
             defaultValue: ''
         },
         deletedAt: {
@@ -49,20 +56,14 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'cascade'
         })
 
-        Product.belongsTo(models.ProductType, {
-            foreignKey: {
+        Product.belongsTo(models.Supplier,{
+            foreignKey:{
                 allowNull: false
             }
         })
 
-        Product.belongsTo(models.Supplier, {
-            foreignKey: {
-                allowNull: false
-            }
-        })
-
-        Product.belongsTo(models.Store, {
-            foreignKey: {
+        Product.belongsTo(models.Store,{
+            foreignKey:{
                 allowNull: false
             }
         })
