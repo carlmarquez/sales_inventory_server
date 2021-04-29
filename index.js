@@ -7,29 +7,29 @@ const app = express()
 const verify = require('./utils/jwt')
 const {User, Store} = require('./models')
 // setting up cors
-// app.use(cors(
-//     {
-//         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-//         origin: 'http://localhost:3000',
-//     }
-// ))
-var allowedOrigins = ['https://jars-cellular.netlify.app'];
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: function(origin, callback){
-            // allow requests with no origin 
-            // (like mobile apps or curl requests)
-            if(!origin) return callback(null, true);
-            if(allowedOrigins.indexOf(origin) === -1){
-              var msg = 'The CORS policy for this site does not ' +
-                        'allow access from the specified Origin.';
-              return callback(new Error(msg), false);
-            }
-            return callback(null, true);}
-       
+        origin: 'https://jars-cellular.netlify.app',
     }
 ))
+// var allowedOrigins = ['https://jars-cellular.netlify.app'];
+// app.use(cors(
+//     {
+//         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+//         origin: function(origin, callback){
+//             // allow requests with no origin 
+//             // (like mobile apps or curl requests)
+//             if(!origin) return callback(null, true);
+//             if(allowedOrigins.indexOf(origin) === -1){
+//               var msg = 'The CORS policy for this site does not ' +
+//                         'allow access from the specified Origin.';
+//               return callback(new Error(msg), false);
+//             }
+//             return callback(null, true);}
+       
+//     }
+// ))
 app.use(bodyParser.json());
 app.use(fileUpload());
 
