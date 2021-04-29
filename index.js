@@ -13,7 +13,7 @@ app.use(cors(
          origin: 'https://jars-cellular.netlify.app',
          allowedHeaders: "Access-Control-Allow-Headers,Access-Control-Allow-Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Origin,Cache-Control,Content-Type,X-Token,X-Refresh-Token",
          credentials: true,   
-         preflightContinue: false
+         //preflightContinue: false
     }
 ))
 /*var allowedOrigins = ['https://jars-cellular.netlify.app'];
