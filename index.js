@@ -10,8 +10,8 @@ const {User, Store} = require('./models')
 app.use(cors(
     {
         'origin': 'https://jars-cellular.netlify.app/',
-        'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        'preflightContinue': false
+        'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        'preflightContinue': true
     }
 ))
 app.options('*', cors())
