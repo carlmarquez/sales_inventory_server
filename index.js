@@ -7,15 +7,15 @@ const app = express()
 const verify = require('./utils/jwt')
 const {User, Store} = require('./models')
 // setting up cors
-app.use(cors(
-    {
-        origin: 'https://jars-cellular.netlify.app/',
-        methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
-        preflightContinue: true
-    }
-))
-app.options('*', cors())
-/*var allowedOrigins = ['http://localhost:3000',
+// app.use(cors(
+//     {
+//         origin: 'https://jars-cellular.netlify.app/',
+//         methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
+//         preflightContinue: true
+//     }
+// ))
+// app.options('*', cors())
+var allowedOrigins = ['http://localhost:3000',
                       'https://jars-cellular.netlify.app/'];
 app.use(cors({
   origin: function(origin, callback){
@@ -29,7 +29,7 @@ app.use(cors({
     }
     return callback(null, true);
   }
-}));*/
+}));
 
 
 app.use(bodyParser.json());
