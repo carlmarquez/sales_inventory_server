@@ -9,7 +9,7 @@ const {User, Store} = require('./models')
 // setting up cors
 app.use(cors(
     {
-         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+         methods: ['GET', 'POST', 'PATCH', 'DELETE','OPTIONS'],
          origin: 'https://jars-cellular.netlify.app',
     }
 ))
