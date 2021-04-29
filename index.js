@@ -8,10 +8,13 @@ const verify = require('./utils/jwt')
 const {User, Store} = require('./models')
 // setting up cors
 app.use(cors(
-//    {
-//         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-//         origin: 'https://jars-cellular.netlify.app',
-//     }
+    {
+         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+         origin: 'https://jars-cellular.netlify.app',
+         allowedHeaders: "Access-Control-Allow-Headers,Access-Control-Allow-Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Origin,Cache-Control,Content-Type,X-Token,X-Refresh-Token",
+         credentials: true,   
+         preflightContinue: false
+    }
 ))
 /*var allowedOrigins = ['https://jars-cellular.netlify.app'];
 app.use(cors(
