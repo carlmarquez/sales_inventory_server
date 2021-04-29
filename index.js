@@ -13,7 +13,7 @@ const {User, Store} = require('./models')
 //         origin: 'http://localhost:3000',
 //     }
 // ))
-
+var allowedOrigins = ['https://jars-cellular.netlify.app'];
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
