@@ -4,8 +4,8 @@ let router = express.Router()
 const ImageFolder = path.join(__dirname, '../uploads/image')
 const fs = require('fs');
 const {Product, Supplier, Store} = require('../models')
-const verify = require('../utils/jwt')
-router.post('/insert', verify,async (req, res) => {
+
+router.post('/insert', async (req, res) => {
 
     let qty = req.body.qty
 
@@ -22,23 +22,16 @@ router.post('/insert', verify,async (req, res) => {
     res.send("ok")
 })
 
-router.post('/update', verify,async (req, res) => {
+router.post('/update', async (req, res) => {
 
-    const {
-        brand,
+    const {  brand,
         code,
         name,
         type,
         price,
         SupplierId,
         StoreId,
-        photo,
-        oldCode
-    } = req.body
-
-
-    console.log('The old code ')
-    console.log(oldCode)
+        photo} = req.body
 
     const data = {
         brand,
@@ -52,8 +45,8 @@ router.post('/update', verify,async (req, res) => {
     }
 
     try {
-        await Product.update(data,
-            {where: {code: oldCode}}
+        const result = await Product.update(data,
+            {where: {code}}
         )
 
     } catch (err) {
@@ -63,25 +56,22 @@ router.post('/update', verify,async (req, res) => {
     res.send("Success")
 })
 
-router.get('/list', verify,(req, res) => {
-
-    const branch = parseInt(req.query.branch)
-
+router.get('/list', (req, res) => {
     Product.findAll({
         include: [
             {model: Supplier},
             {model: Store},
-        ],
-        where: branch === 0 ? null : {StoreID: req.query.branch}
-    }).then((product) => {
-        res.send(product)
+        ]
+        // where: {firstName: "John"}
+    }).then((supplier) => {
+        res.send(supplier)
     }).catch((error) => {
         console.log(error);
     })
 })
 
 
-router.post('/delete', verify,async (req, res) => {
+router.post('/delete', async (req, res) => {
     let qty = req.body.qty
     const code = req.body.code
 
@@ -128,7 +118,7 @@ router.get("/getImage/:name", (req, res) => {
 
 
 // get all images in the folder
-router.get("/images", verify,(req, res) => {
+router.get("/images", (req, res) => {
     const data = []
 
     fs.readdirSync(ImageFolder).forEach(file => {
@@ -140,7 +130,7 @@ router.get("/images", verify,(req, res) => {
 });
 
 
-router.post("/transfer", verify,async (req, res) => {
+router.post("/transfer", async (req, res) => {
     const {code, qty, storeID} = req.body
 
     const data = await Product.findAll({
@@ -171,7 +161,7 @@ router.post("/transfer", verify,async (req, res) => {
     }
 })
 
-router.post('/find',verify, async (req, res) => {
+router.post('/find', async (req,res) => {
 
     const {code} = req.body
 
@@ -182,12 +172,12 @@ router.post('/find',verify, async (req, res) => {
         }
     })
 
-    if (data.length === 0) {
+    if(data.length === 0){
         res.status(400).send({
             title: 'Product Not Found',
             message: 'User Barcode to find product'
         })
-    } else {
+    }else{
         res.send(data)
     }
 })
