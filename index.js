@@ -14,6 +14,7 @@ const verify = require('./utils/jwt')
 //     }
 // ))
 var allowedOrigins = ['https://jars-cellular.netlify.app','localhost/'];
+//setting up cors
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
@@ -29,8 +30,7 @@ app.use(cors(
             return callback(null, true);}
        
     }
-));
-
+))
 app.use(bodyParser.json());
 app.use(fileUpload());
 
@@ -47,7 +47,7 @@ const DashBoardRoute = require('./routes/DashBoardRoute')
 const Auth = require('./routes/Authentication')
 
 // route implementation
-app.use('/product',verify, ProductRoute)
+app.use('/product', ProductRoute)
 app.use('/user',verify, UserRoute)
 app.use('/transaction',verify, TransactionRoute)
 app.use('/supplier', verify,SupplierRoute)
@@ -77,8 +77,14 @@ app.post('/upload', async (req, res) => {
     res.send(`Hello World`)
 })
 
+db.sequelize.sync().then(() => {
+    app.listen(3001, () => {
+        console.log("Server running");
+    })
+})
+
 db.sequelize.sync().then((req) => {
-    app.listen(process.env.PORT || 3001, () => {
-         console.log("Server running");
-     })
- }) 
+   app.listen(process.env.PORT || 3001, () => {
+        console.log("Server running");
+    })
+})
