@@ -10,9 +10,10 @@ const {User, Store,Customer,Setting} = require('./models')
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: 'http://jars-cellular.netlify.app',
+        origin: 'https://jars-cellular.netlify.app',
     }
 ))
+app.options('*',cors())
 
 app.use(bodyParser.json());
 app.use(fileUpload());
