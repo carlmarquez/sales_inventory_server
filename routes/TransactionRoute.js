@@ -1,19 +1,40 @@
 const express = require('express')
 let router = express.Router()
-const {Transaction,Customer,Store,User} = require('../models')
+const {Transaction, Customer, Store, User, Product, Sales} = require('../models')
+const Insert=  require('../utils/InsertAuditTrail')
+router.post('/insert', async (req, res) => {
+    const user = req.user.user
+    const item = req.body.items
 
-router.get('/insert', async (req, res) => {
-    const transaction = await Transaction.create({
-        amount: 22.1,
-        discount: 0.0,
-        CustomerId:1,
-        UserId: 6,
-        StoreId: 1
-    }).catch(err => {
+
+    const transaction = await Transaction.create(req.body).catch(err => {
         if (err) {
-            console.log(err);
+            return res.status(404).send(err)
         }
     })
+
+    Insert(user.StoreId,user.id,
+        ' Created Transaction With The Code Of ' + transaction.code + ' With The Total Of ₱ ' + transaction.amount + ' In Branch ' + user.Store.location,transaction.amount)
+
+    for (let i = 0; i < item.length; i++) {
+        let qty = item[i].qty
+
+        while (qty !== 0) {
+            await Sales.create({
+                TransactionId: transaction.id,
+                ProductId: item[i].id
+            }).then(ignored => {
+                Product.update(
+                    {status: 'Sold'},
+                    {where: {id: item[i].id}}
+                )
+            }).catch(error => {
+                console.log(error)
+            })
+            qty--
+        }
+    }
+
 
     res.send(transaction)
 })
@@ -31,6 +52,44 @@ router.get('/list', (req, res) => {
     }).catch((error) => {
         console.log(error);
     })
+})
+
+router.post('/find', async (req,res) => {
+
+    const {code} = req.body
+
+    const transaction = await Transaction.findOne({
+        include: [
+            {model: Store},
+            {model: Customer},
+            {model: User}
+        ],
+        where: {code}
+    })
+
+
+
+    if(transaction.length === 0){
+        return res.status(400).send({
+            title: 'Transaction Not Found',
+            message: 'Enter Proper Transaction Code'
+        })
+    }
+
+    const sales = await Sales.findAll({
+        include: [
+            {model: Product}
+        ],
+        where:{TransactionId: transaction.id}
+    })
+
+    const data = {
+        transaction,
+        sales
+    }
+
+
+    res.send(data)
 })
 
 

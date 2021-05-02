@@ -2,7 +2,6 @@ const express = require('express')
 let router = express.Router()
 const {User,Store,AuditTrail} = require('../models')
 
-
 router.get('/insert', async (req, res) => {
     const audit = await AuditTrail.create({
         action: "Update the prooduct",
@@ -25,11 +24,12 @@ router.get('/list', (req, res) => {
             {model: Store},
         ],
     }).then((supplier) => {
-        res.send(supplier)
+        res.send(supplier.reverse())
     }).catch((error) => {
         console.log(error);
     })
 })
+
 
 
 router.get('/delete', (req, res) => {

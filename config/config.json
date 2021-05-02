@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "pokemondeluge123",
+    "password": "",
     "database": "sales_inventory",
     "host": "localhost",
     "dialect": "mysql"

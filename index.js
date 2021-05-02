@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload')
 const app = express()
 const verify = require('./utils/jwt')
-const {User, Store} = require('./models')
+const {User, Store,Customer,Setting} = require('./models')
 // setting up cors
 app.use(cors(
     {
@@ -13,23 +13,7 @@ app.use(cors(
         origin: 'https://jars-cellular.netlify.app',
     }
 ))
-// var allowedOrigins = ['https://jars-cellular.netlify.app'];
-// app.use(cors(
-//     {
-//         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-//         origin: function(origin, callback){
-//             // allow requests with no origin 
-//             // (like mobile apps or curl requests)
-//             if(!origin) return callback(null, true);
-//             if(allowedOrigins.indexOf(origin) === -1){
-//               var msg = 'The CORS policy for this site does not ' +
-//                         'allow access from the specified Origin.';
-//               return callback(new Error(msg), false);
-//             }
-//             return callback(null, true);}
-       
-//     }
-// ))
+
 app.use(bodyParser.json());
 app.use(fileUpload());
 
@@ -78,8 +62,31 @@ app.post('/upload', async (req, res) => {
     res.send(`Hello World`)
 })
 
+
+
 db.sequelize.sync().then(() => {
     app.listen(process.env.PORT || 3001, async () => {
+
+        const customer = await Customer.findOne({
+            where: {id: 1}
+        })
+
+        if(!customer){
+            try{
+                await Customer.create({
+                    name: 'Hidden',
+                    email: 'Hidden@email.com',
+                    address: 'Hidden',
+                    city: 'Hidden',
+                    postalCode: 1,
+                    mobile_no: 'Hidden',
+                    tel_no: 'Hidden'
+
+                })
+            }catch(error) {
+                console.log(error)
+            }
+        }
 
         const store = await Store.findOne({
             where: {id: 1}
@@ -121,5 +128,22 @@ db.sequelize.sync().then(() => {
             }
         }
 
+
+        const data = {
+            critical_stock: 1,
+        }
+
+        let stock = await Setting.findOne({
+            where: {id: 1}
+        })
+
+        if (stock === null) {
+             await Setting.create(data).catch(error => {
+                console.log(error)
+            })
+        }
+
     })
 })
+
+
