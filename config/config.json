@@ -18,9 +18,9 @@
     "password": "vnfu50td4MgzmNdLIFRb",
     "database": "sales_inventory",
     "host": "jars-sales-inventory.cdzdapjk2vxn.us-east-2.rds.amazonaws.com",
-    "dialect": "mysql",
+    "dialect": "mysql"/*,
     "dialectOptions": {
       "ssl": true
-    }
+    }*/
   }
 }
