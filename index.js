@@ -11,7 +11,7 @@ app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
         origin: 'https://jars-cellular.netlify.app',
-        "preflightContinue": false,
+        "preflightContinue": true,
         "optionsSuccessStatus": 204
     }
 ))
