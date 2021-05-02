@@ -11,9 +11,11 @@ app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
         origin: 'https://jars-cellular.netlify.app',
+        "preflightContinue": false,
+        "optionsSuccessStatus": 204
     }
 ))
-app.options('*',cors())
+
 
 app.use(bodyParser.json());
 app.use(fileUpload());
