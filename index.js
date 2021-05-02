@@ -6,16 +6,14 @@ const fileUpload = require('express-fileupload')
 const app = express()
 const verify = require('./utils/jwt')
 const {User, Store,Customer,Setting} = require('./models')
+const PORT = process.env.PORT || 3001;
 // setting up cors
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
         origin: 'https://jars-cellular.netlify.app',
-//         "preflightContinue": true,
-//         "optionsSuccessStatus": 204
     }
 ))
-
 
 app.use(bodyParser.json());
 app.use(fileUpload());
@@ -68,8 +66,8 @@ app.post('/upload', async (req, res) => {
 
 
 db.sequelize.sync().then(() => {
-    app.listen(process.env.PORT || 3001, async () => {
-
+    app.listen(PORT, async () => {
+        console.log("i am listening ")
         const customer = await Customer.findOne({
             where: {id: 1}
         })
@@ -145,7 +143,6 @@ db.sequelize.sync().then(() => {
                 console.log(error)
             })
         }
-
     })
 })
 

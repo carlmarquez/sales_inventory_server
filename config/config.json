@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "",
-    "database": "sales_inventory",
+    "password": null,
+    "database": "sales_inventory_v2",
     "host": "localhost",
     "dialect": "mysql"
   },
@@ -18,6 +18,9 @@
     "password": "vnfu50td4MgzmNdLIFRb",
     "database": "sales_inventory",
     "host": "jars-sales-inventory.cdzdapjk2vxn.us-east-2.rds.amazonaws.com",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "dialectOptions": {
+      "ssl": true
+    }
   }
 }
