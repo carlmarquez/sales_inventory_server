@@ -7,6 +7,7 @@ const app = express()
 const verify = require('./utils/jwt')
 const {User, Store,Customer,Setting} = require('./models')
 const PORT = process.env.PORT || 3001;
+
 // setting up cors
 app.use(cors(
     {
@@ -30,6 +31,9 @@ const AuditTrailRoute = require('./routes/AuditTrail')
 const DashBoardRoute = require('./routes/DashBoardRoute')
 const Auth = require('./routes/Authentication')
 const Settings = require('./routes/SettingsRoute')
+const Transfer = require('./routes/TransferRoute')
+const ResetPassword = require('./routes/PasswordReset')
+const EncryptPassword = require("./utils/HashedPassword");
 
 // route implementation
 app.use('/product', ProductRoute)
@@ -42,6 +46,8 @@ app.use('/customer', verify, CustomerRoute)
 app.use('/audit', verify, AuditTrailRoute)
 app.use('/dashboard', verify, DashBoardRoute)
 app.use('/setting', verify, Settings)
+app.use('/transfer', verify, Transfer)
+app.use('/resetPassword',ResetPassword)
 app.use('/', Auth)
 
 app.post('/upload', async (req, res) => {
@@ -96,7 +102,7 @@ db.sequelize.sync().then(() => {
         if (!store) {
             try {
                 await Store.create({
-                    code: 'jard-main-location',
+                    code: 'jars-main-location',
                     location: 'San Pablo',
                     email: 'owner@gmail.com',
                     postalCode: '1850',
@@ -112,12 +118,13 @@ db.sequelize.sync().then(() => {
         const user = await User.findOne({
             where: {id: 1}
         })
+        const password =await EncryptPassword("jars")
 
         if (!user) {
             try {
                 await User.create({
-                    email: 'owner',
-                    password: 'jars',
+                    email: 'owner@gmail.com',
+                    password,
                     firstName: 'owner',
                     lastName: 'lastName',
                     role: 3,

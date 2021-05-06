@@ -2,13 +2,16 @@ const express = require('express')
 let router = express.Router()
 const {User, Store} = require('../models')
 const Insert=  require('../utils/InsertAuditTrail')
+const EncryptPassword = require("../utils/HashedPassword");
 router.post('/insert', async (req, res) => {
     const user = req.user.user
-    await User.create(req.body).then(e => {
+
+    req.body.password = await EncryptPassword(req.body.password)
+
+    await User.create(req.body).then(ignored => {
         Insert(user.StoreId,user.id,
             ' Created User With The Email Of ' + user.email + ' In Branch ' + user.Store.location,0)
 
-        res.send(e)
     }).catch(ignored => {
         res.status(400).send({
             title: 'Email Should be unique',
@@ -36,6 +39,12 @@ router.get('/list',(req, res) => {
 router.post('/delete', async (req, res) => {
     const users = req.user.user
     let error;
+    if(req.body.email === 'owner'){
+       return res.status(400).send({
+            title: `Can't Delete Owner`,
+            message: `Can't Delete This User`
+        })
+    }
     try {
         const user = await User.destroy({
             where: {
@@ -87,6 +96,13 @@ router.post('/find', async (req,res) => {
 
 router.post('/update', async (req, res) => {
     const users = req.user.user
+    const pass = req.body.password.split('$').length
+    if(pass >=4){
+        delete req.body.password
+    }else{
+        req.body.password = await EncryptPassword(req.body.password)
+    }
+
     try {
         const result = await User.update(req.body,
             {
@@ -107,6 +123,7 @@ router.post('/update', async (req, res) => {
             message: `Can't update User`
         })
     }
+    res.send('ok')
 })
 
 
