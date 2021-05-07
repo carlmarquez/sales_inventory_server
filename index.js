@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: 'https://jars-cellular.netlify.app',
+        origin: 'https://jars-cellular.netlify.app/',
     }
 ))
 
