@@ -172,7 +172,7 @@ db.sequelize.sync().then(() => {
             try {
                 await User.create({
                     email: 'owner@gmail.com',
-                    password,
+                    password: '1234',
                     firstName: 'owner',
                     lastName: 'lastName',
                     role: 3,
