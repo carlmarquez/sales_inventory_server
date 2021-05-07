@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors(
     {
         methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-        origin: 'https://jars-cellular.netlify.app',
+        origin: 'https://jars-cellular.netlify.app/',
     }
 ))
 
@@ -172,7 +172,7 @@ db.sequelize.sync().then(() => {
             try {
                 await User.create({
                     email: 'owner@gmail.com',
-                    password: '1234',
+                    password,
                     firstName: 'owner',
                     lastName: 'lastName',
                     role: 3,
