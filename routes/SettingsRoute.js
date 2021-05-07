@@ -1,8 +1,8 @@
 const express = require('express')
 let router = express.Router()
-const {Setting, ProductType,Product,Store,Supplier} = require('../models')
+const {Setting, ProductType, Product, Store, Supplier} = require('../models')
 
-const Insert=  require('../utils/InsertAuditTrail')
+const Insert = require('../utils/InsertAuditTrail')
 const {Sequelize} = require("sequelize");
 
 router.post('/insertProductType', async (req, res) => {
@@ -14,8 +14,8 @@ router.post('/insertProductType', async (req, res) => {
         res.status(404)
     })
 
-    Insert(user.StoreId,user.id,
-        'Added Product Type ' + name + ' In Branch ' + user.Store.location,0)
+    Insert(user.StoreId, user.id,
+        'Added Product Type ' + name + ' In Branch ' + user.Store.location, 0)
 
 
     res.send(productType)
@@ -33,6 +33,16 @@ router.post('/deleteProductType', async (req, res) => {
     const user = req.user.user
     const {name} = req.body
     let error = false
+
+    const productType = await ProductType.findOne({
+        where: {name}
+    })
+
+    if (productType.id === 1) {
+        return res.status(404).send({message: "Can't Delete This Item"})
+    }
+
+
     await ProductType.destroy({
         where: {name}
     }).catch(ignored => {
@@ -42,8 +52,8 @@ router.post('/deleteProductType', async (req, res) => {
     if (error) {
         res.status(404).send({message: "Can't Delete This Item"})
     } else {
-        Insert(user.StoreId,user.id,
-            'Delete Product Type ' + name + ' In Branch ' + user.Store.location,0)
+        Insert(user.StoreId, user.id,
+            'Delete Product Type ' + name + ' In Branch ' + user.Store.location, 0)
         res.send({message: 'Deleted Success'})
     }
 })
@@ -59,8 +69,8 @@ router.post('/setCriticalStock', async (req, res) => {
         where: {id: 1}
     })
 
-    Insert(user.StoreId,user.id,
-        ' Set Critical Product Quantity To ' + value + ' In Branch ' + user.Store.location,0)
+    Insert(user.StoreId, user.id,
+        ' Set Critical Product Quantity To ' + value + ' In Branch ' + user.Store.location, 0)
     res.send({message: 'Update Critical Stock Success'})
 })
 
@@ -89,6 +99,10 @@ router.get('/getCriticalStockProduct', async (req, res) => {
         })
     })
 
+
+    // console.log('i am here')
+    // console.log(stores)
+
     const data = await Product.findAndCountAll({
         attributes: [Sequelize.fn('DISTINCT', Sequelize.col('code')), 'code'],
         where: {
@@ -100,9 +114,12 @@ router.get('/getCriticalStockProduct', async (req, res) => {
         .then(e => e)
         .catch(error => console.log(error))
 
+
     for (let i = 0; i < data.rows.length; i++) {
         codes.push(data.rows[i].code)
     }
+
+    // console.log(codes)
 
 
     for (let i = 0; i < stores.length; i++) {
@@ -118,9 +135,14 @@ router.get('/getCriticalStockProduct', async (req, res) => {
                 },
                 limit: currentCriticalStockNumber + 1
             }).then(e => {
+
+                // kunin natin unang data
                 if (e.length <= currentCriticalStockNumber) {
                     if (e[0] === undefined) {
+                        // console.log('i am here')
+                        // console.log(e.length + " The store " + stores[i])
                         const getData = async () => {
+
                             let product = await Product.findOne({
                                 where: {
                                     code: codes[j],
@@ -134,14 +156,20 @@ router.get('/getCriticalStockProduct', async (req, res) => {
                             product.StoreId = stores[i]
                             product["Store"] = newStore
 
-                            criticalStock.push({
+
+                            await criticalStock.push({
                                 product,
                                 branch: newStore
                             })
+
+                            console.log(criticalStock.length)
                         }
+
                         getData().then(ignored => {
                         })
+
                     } else {
+
                         const getData = async () => {
 
                             let newStore = await Store.findOne({
@@ -156,15 +184,14 @@ router.get('/getCriticalStockProduct', async (req, res) => {
                         }
                         getData().then(ignored => {
                         })
+
                     }
                 }
             })
         }
     }
-
-
+    await new Promise(r => setTimeout(r, 5000));
     res.send(criticalStock)
-
 })
 
 

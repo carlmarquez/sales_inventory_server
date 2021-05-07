@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": null,
-    "database": "sales_inventory",
+    "database": "sales_inventory_v2",
     "host": "localhost",
     "dialect": "mysql"
   },
